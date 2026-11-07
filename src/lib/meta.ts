@@ -47,7 +47,7 @@ export function cardArt(art: string, skin: ArtSkin = 'legend'): string {
 }
 
 export function nobleArt(id: string, skin: NobleSkin = 'oil'): string {
-  const folder = skin === 'glass' ? 'glass' : 'legend';
+  const folder = skin === 'glass' ? 'glass' : skin === 'anime' ? 'anime' : 'legend';
   return `/assets/art/${folder}/noble-${id}.webp`;
 }
 
@@ -93,7 +93,7 @@ export const DEFAULT_SKINS: SkinSettings = {
 export const ART_PRESETS: Record<ArtSkin, Omit<SkinSettings, 'art' | 'avatar'>> = {
   legend: { frame: 'gilded', gems: 'faceted', back: 'emerald', table: 'tavern', noble: 'oil' },
   glass: { frame: 'frost', gems: 'crystal', back: 'astral', table: 'astral', noble: 'glass' },
-  anime: { frame: 'jade', gems: 'rune', back: 'crimson', table: 'velvet', noble: 'oil' },
+  anime: { frame: 'jade', gems: 'rune', back: 'crimson', table: 'velvet', noble: 'anime' },
 };
 
 export const SKIN_OPTIONS = {
@@ -128,6 +128,7 @@ export const SKIN_OPTIONS = {
   noble: [
     { id: 'oil', name: '宫廷油画', desc: '文艺复兴肖像原画，10 位贵族各一幅。' },
     { id: 'glass', name: '彩窗圣像', desc: '同一批贵族的彩绘玻璃版本，金线勾边。' },
+    { id: 'anime', name: '星轨王庭', desc: '10 位贵族的动漫幻想肖像，与星轨绘旅卡面同一世界观。' },
   ],
 } as const;
 
@@ -139,7 +140,7 @@ export const AVATAR_OPTIONS = [
 
 export function avatarArt(key: string, skin: ArtSkin = 'legend'): string {
   if (/^[wbgkr][123]$/.test(key)) return cardArt(`${key}-01`, skin);
-  const folder = skin === 'glass' ? 'glass' : 'legend';
+  const folder = skin === 'glass' ? 'glass' : skin === 'anime' ? 'anime' : 'legend';
   return `/assets/art/${folder}/${key}.webp`;
 }
 

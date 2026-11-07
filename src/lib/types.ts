@@ -146,7 +146,7 @@ export type GemSkin = 'faceted' | 'coin' | 'crystal' | 'rune';
 export type BackSkin = 'emerald' | 'crimson' | 'astral';
 export type TableSkin = 'tavern' | 'astral' | 'velvet' | 'ember';
 export type FrameSkin = 'gilded' | 'jade' | 'frost' | 'abyss';
-export type NobleSkin = 'oil' | 'glass';
+export type NobleSkin = 'oil' | 'glass' | 'anime';
 
 export interface SkinSettings {
   frame: FrameSkin;
