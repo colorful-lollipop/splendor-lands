@@ -1,0 +1,262 @@
+/* ============================================================
+   三套卡面画风的独立视觉语言
+   - 传奇油画：暖金雕花、古典油画
+   - 彩窗圣殿：哥特尖拱窗、铅条彩绘玻璃、冷冽圣光
+   - 星轨绘旅：现代二次元卡牌、虹彩镭射、斜切名牌
+   规则全部挂在卡牌自身的 data-art 上，这样皮肤工坊里可以并排预览三种画风。
+   ============================================================ */
+
+/* ---------- 彩窗圣殿 ---------- */
+.card[data-art='glass'] {
+  --radius: 12px;
+}
+.card[data-art='glass'] .card-inner {
+  border-radius: 12px;
+  background:
+    radial-gradient(120% 60% at 50% 0%, rgba(174, 220, 255, 0.16), transparent 58%),
+    linear-gradient(170deg, #16263c, #0a1220 55%, #060a12);
+  box-shadow:
+    0 0 0 1px rgba(215, 240, 255, 0.35) inset,
+    0 0 0 3px #08101c,
+    0 0 0 4px color-mix(in srgb, var(--c) 58%, #9fd0ee),
+    0 0 0 6px #060c16,
+    0 10px 26px rgba(0, 0, 0, 0.62),
+    0 0 26px -4px color-mix(in srgb, var(--c) 40%, #77b8e8);
+}
+/* 彩窗画风把原画嵌进一扇哥特尖拱窗里，而不是铺满整张卡。 */
+.card[data-art='glass'] .card-art {
+  inset: 6px 6px 38px;
+  border-radius: 46% 46% 5px 5px / 20% 20% 5px 5px;
+  box-shadow:
+    0 0 0 2px rgba(205, 235, 255, 0.5),
+    0 0 0 4px rgba(7, 14, 24, 0.92),
+    0 0 22px rgba(110, 175, 235, 0.28) inset;
+}
+.card[data-art='glass'] .card-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  background:
+    repeating-linear-gradient(64deg, rgba(8, 18, 30, 0.5) 0 1px, transparent 1px 30px),
+    repeating-linear-gradient(-64deg, rgba(8, 18, 30, 0.38) 0 1px, transparent 1px 30px);
+  mix-blend-mode: multiply;
+  opacity: 0.38;
+  pointer-events: none;
+}
+.card[data-art='glass'] .card-art img {
+  filter: saturate(1.2) contrast(1.08) brightness(1.04);
+  object-position: 50% 14%;
+}
+.card[data-art='glass'] .card-tier {
+  border-radius: 999px;
+  font-size: 8px;
+  padding: 1px 6px;
+  color: #e6f5ff;
+  background: rgba(8, 19, 34, 0.78);
+  box-shadow: 0 0 0 1px rgba(158, 212, 248, 0.5), 0 0 10px rgba(120, 180, 240, 0.35);
+}
+.card[data-art='glass'] .card-name {
+  bottom: 38px;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: #eaf6ff;
+  background: linear-gradient(90deg, transparent, rgba(7, 17, 30, 0.82) 14%, rgba(7, 17, 30, 0.82) 86%, transparent);
+  text-shadow: 0 0 9px rgba(132, 196, 255, 0.85), 0 1px 3px #000;
+}
+.card[data-art='glass'] .card-cost {
+  height: 34px;
+  background: linear-gradient(180deg, rgba(12, 28, 46, 0.94), rgba(4, 8, 15, 0.98));
+  box-shadow:
+    0 -1px 0 rgba(158, 212, 248, 0.4) inset,
+    0 0 14px rgba(90, 158, 220, 0.18) inset;
+}
+.card[data-art='glass'] .cost-pip {
+  color: #e8f6ff;
+}
+.card[data-art='glass'] .cost-pip.is-needed .num {
+  color: #b9e6ff;
+}
+.card[data-art='glass'] .card-bonus {
+  background: radial-gradient(circle at 38% 30%, rgba(225, 245, 255, 0.3), rgba(7, 16, 28, 0.9) 72%);
+  box-shadow:
+    0 0 0 1px rgba(168, 218, 250, 0.6),
+    0 0 0 4px rgba(10, 22, 38, 0.9),
+    0 0 0 5px rgba(120, 174, 214, 0.35),
+    0 2px 10px rgba(0, 0, 0, 0.6);
+}
+.card[data-art='glass'] .card-points {
+  border-radius: 50%;
+  color: #0b2238;
+  background: radial-gradient(circle at 38% 28%, #ffffff, #cfeaff 45%, #86b7d8);
+  box-shadow:
+    0 0 0 1px rgba(40, 76, 108, 0.9),
+    0 0 0 4px rgba(9, 20, 34, 0.9),
+    0 0 16px rgba(140, 205, 255, 0.55);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+.card[data-art='glass'] .corner {
+  color: rgba(180, 222, 250, 0.7);
+  opacity: 0.5;
+  width: 12px;
+  height: 12px;
+}
+.card[data-art='glass'] .card-art-vignette {
+  background:
+    linear-gradient(180deg, rgba(6, 12, 22, 0.5) 0%, transparent 24%, transparent 52%, rgba(6, 14, 26, 0.7) 74%, rgba(3, 7, 13, 0.96) 100%),
+    radial-gradient(120% 90% at 50% 38%, transparent 55%, rgba(5, 10, 18, 0.42) 100%);
+}
+.card[data-art='glass'].is-affordable .card-inner {
+  box-shadow:
+    0 0 0 1px rgba(240, 252, 255, 0.6) inset,
+    0 0 0 3px #08101c,
+    0 0 0 4px #cbe9ff,
+    0 0 0 6px #060c16,
+    0 0 34px rgba(150, 215, 255, 0.7);
+}
+
+/* ---------- 星轨绘旅 ---------- */
+.card[data-art='anime'] {
+  --radius: 16px;
+}
+.card[data-art='anime'] .card-inner {
+  border-radius: 16px;
+  background:
+    radial-gradient(110% 70% at 50% 0%, rgba(255, 255, 255, 0.16), transparent 55%),
+    linear-gradient(170deg, #241640, #100a20 58%, #080510);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.55) inset,
+    0 0 0 2px color-mix(in srgb, var(--c) 55%, #ffffff),
+    0 0 0 4px rgba(12, 8, 22, 0.92),
+    0 12px 30px rgba(0, 0, 0, 0.55),
+    0 0 30px -6px color-mix(in srgb, var(--c) 70%, #ff86d8);
+}
+.card[data-art='anime'] .card-inner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 20%, rgba(255, 255, 255, 0.22) 40%, rgba(160, 240, 255, 0.16) 48%, rgba(255, 150, 230, 0.18) 55%, transparent 72%);
+  background-size: 240% 240%;
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  pointer-events: none;
+  animation: anime-holo 6s ease-in-out infinite;
+}
+@keyframes anime-holo {
+  0%, 100% { background-position: 12% 0; }
+  50% { background-position: 88% 100%; }
+}
+.card[data-art='anime'] .card-inner::after {
+  content: '✦';
+  position: absolute;
+  top: 7px;
+  left: 9px;
+  z-index: 3;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--c) 80%, #fff);
+  pointer-events: none;
+}
+.card[data-art='anime'] .card-art img {
+  filter: saturate(1.24) contrast(1.06) brightness(1.08);
+  object-position: 50% 10%;
+}
+.card[data-art='anime'] .card-art-vignette {
+  background:
+    linear-gradient(180deg, rgba(10, 6, 20, 0.32) 0%, transparent 22%, transparent 48%, rgba(12, 7, 24, 0.66) 70%, rgba(7, 4, 14, 0.95) 100%),
+    radial-gradient(120% 90% at 50% 36%, transparent 58%, rgba(10, 5, 20, 0.34) 100%);
+}
+.card[data-art='anime'] .card-tier {
+  top: 8px;
+  left: 22px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  padding: 2px 7px;
+  color: #fff;
+  background: color-mix(in srgb, var(--c) 52%, rgba(14, 8, 28, 0.7));
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.32), 0 0 10px color-mix(in srgb, var(--c) 55%, transparent);
+  opacity: 1;
+}
+.card[data-art='anime'] .card-name {
+  left: 7px;
+  right: 7px;
+  bottom: 38px;
+  padding: 3px 4px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #ffffff;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--c) 62%, #1a0f2c), rgba(18, 10, 32, 0.9) 45%, color-mix(in srgb, var(--c) 40%, #1a0f2c));
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.18), 0 2px 8px rgba(0, 0, 0, 0.55);
+  transform: skewX(-7deg);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+.card[data-art='anime'] .card-cost {
+  height: 34px;
+  background: linear-gradient(180deg, rgba(22, 14, 40, 0.94), rgba(8, 5, 16, 0.99));
+  box-shadow: 0 -1px 0 color-mix(in srgb, var(--c) 55%, transparent) inset;
+}
+.card[data-art='anime'] .cost-pip .num {
+  color: #fff;
+}
+.card[data-art='anime'] .cost-pip.is-needed .num {
+  color: #ffe8ff;
+}
+.card[data-art='anime'] .card-bonus {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.22), rgba(12, 7, 24, 0.9));
+  clip-path: polygon(25% 4%, 75% 4%, 98% 50%, 75% 96%, 25% 96%, 2% 50%);
+  border-radius: 0;
+  box-shadow: 0 0 14px color-mix(in srgb, var(--c) 65%, transparent);
+}
+.card[data-art='anime'] .card-points {
+  top: -6px;
+  left: -6px;
+  border-radius: 999px;
+  color: #2b1020;
+  background: radial-gradient(circle at 38% 28%, #ffffff, #ffe3f4 40%, #ffb7dd 70%, #e78ac4);
+  box-shadow:
+    0 0 0 1px rgba(120, 40, 90, 0.55),
+    0 0 0 3px rgba(16, 8, 28, 0.9),
+    0 0 16px rgba(255, 150, 220, 0.65);
+}
+.card[data-art='anime'] .corner {
+  display: none;
+}
+.card[data-art='anime'] .card-frame-line {
+  inset: 5px;
+  border-radius: 12px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22) inset;
+}
+.card[data-art='anime'].is-affordable .card-inner {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+    0 0 0 2px #ffffff,
+    0 0 0 4px rgba(12, 8, 22, 0.92),
+    0 0 40px color-mix(in srgb, var(--c) 80%, #ff8cd8);
+}
+
+/* 大尺寸卡牌保持可读 */
+.card[data-art='glass'].card-large .card-name { font-size: 12px; bottom: 52px; }
+.card[data-art='anime'].card-large .card-name { font-size: 14px; bottom: 52px; }
+.card[data-art='glass'].card-mini .card-name,
+.card[data-art='anime'].card-mini .card-name { font-size: 8px; bottom: 26px; }
+.card[data-art='glass'].card-search .card-name,
+.card[data-art='anime'].card-search .card-name { font-size: 8.5px; bottom: 30px; }
+
+/* 彩窗拱窗在各尺寸下保持比例 */
+.card[data-art='glass'].card-large .card-art { inset: 8px 8px 46px; }
+.card[data-art='glass'].card-mini .card-art { inset: 4px 4px 24px; }
+.card[data-art='glass'].card-search .card-art { inset: 5px 5px 27px; }
+.card[data-art='glass'].card-mobile .card-art { inset: 4px 4px 22%; }
+.card[data-art='glass'].card-micro .card-art { inset: 0; }
+
+/* ---------- 取景 ---------- */
+/* 每张卡都是独立原画，不做重复原画的取景裁切。 */

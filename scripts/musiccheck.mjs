@@ -1,0 +1,16 @@
+﻿import { chromium } from 'playwright-core';
+const CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const browser = await chromium.launch({ executablePath: CHROME, headless: false, args: ['--autoplay-policy=no-user-gesture-required'] });
+const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
+const logs = [];
+page.on('console', (m) => { if (m.type() === 'error') logs.push(m.text()); });
+page.on('pageerror', (e) => logs.push('pageerror: ' + e.message));
+await page.goto('http://localhost:3001', { waitUntil: 'networkidle' });
+await page.waitForTimeout(500);
+await page.mouse.click(300, 500);
+await page.waitForTimeout(2000);
+const a = await page.evaluate(() => window.__splendorDev?.music());
+await page.waitForTimeout(1500);
+const b = await page.evaluate(() => window.__splendorDev?.music());
+console.log('audio before', a, 'after', b, 'errors', logs);
+await browser.close();

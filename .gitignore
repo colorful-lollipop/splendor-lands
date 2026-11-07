@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+
+# generated / local assets (large source files, not needed to run)
+art-src/
+shots/
+
+# runtime logs & local state
+server.log
+*.log
+.env
+.env.*
+!.env.example
+
+# python training artefacts
+train/checkpoints/
+train/data/
+__pycache__/
+*.pyc
+
+# editors / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

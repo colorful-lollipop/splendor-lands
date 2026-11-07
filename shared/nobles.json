@@ -1,0 +1,152 @@
+[
+  {
+    "id": "mary",
+    "name": "玛丽·斯图亚特",
+    "nameEn": "Mary Stuart",
+    "title": "苏格兰女王",
+    "points": 3,
+    "art": "mary",
+    "cost": {
+      "w": 0,
+      "b": 0,
+      "g": 4,
+      "r": 4,
+      "k": 0
+    }
+  },
+  {
+    "id": "suleiman",
+    "name": "苏莱曼大帝",
+    "nameEn": "Suleiman the Magnificent",
+    "title": "奥斯曼帝国苏丹",
+    "points": 3,
+    "art": "suleiman",
+    "cost": {
+      "w": 0,
+      "b": 4,
+      "g": 4,
+      "r": 0,
+      "k": 0
+    }
+  },
+  {
+    "id": "machiavelli",
+    "name": "马基雅维利",
+    "nameEn": "Niccolò Machiavelli",
+    "title": "佛罗伦萨外交家",
+    "points": 3,
+    "art": "machiavelli",
+    "cost": {
+      "w": 4,
+      "b": 4,
+      "g": 0,
+      "r": 0,
+      "k": 0
+    }
+  },
+  {
+    "id": "isabella",
+    "name": "伊莎贝拉一世",
+    "nameEn": "Isabella I",
+    "title": "卡斯蒂利亚女王",
+    "points": 3,
+    "art": "isabella",
+    "cost": {
+      "w": 4,
+      "b": 0,
+      "g": 0,
+      "r": 0,
+      "k": 4
+    }
+  },
+  {
+    "id": "henry",
+    "name": "亨利八世",
+    "nameEn": "Henry VIII",
+    "title": "英格兰国王",
+    "points": 3,
+    "art": "henry",
+    "cost": {
+      "w": 0,
+      "b": 0,
+      "g": 0,
+      "r": 4,
+      "k": 4
+    }
+  },
+  {
+    "id": "catherine",
+    "name": "凯瑟琳·德·美第奇",
+    "nameEn": "Catherine de Médicis",
+    "title": "法兰西王后",
+    "points": 3,
+    "art": "catherine",
+    "cost": {
+      "w": 0,
+      "b": 3,
+      "g": 3,
+      "r": 3,
+      "k": 0
+    }
+  },
+  {
+    "id": "anne",
+    "name": "布列塔尼的安妮",
+    "nameEn": "Anne of Brittany",
+    "title": "布列塔尼女公爵",
+    "points": 3,
+    "art": "anne",
+    "cost": {
+      "w": 3,
+      "b": 3,
+      "g": 3,
+      "r": 0,
+      "k": 0
+    }
+  },
+  {
+    "id": "elisabeth",
+    "name": "奥地利的伊丽莎白",
+    "nameEn": "Elisabeth of Austria",
+    "title": "法兰西王后",
+    "points": 3,
+    "art": "elisabeth",
+    "cost": {
+      "w": 3,
+      "b": 3,
+      "g": 0,
+      "r": 0,
+      "k": 3
+    }
+  },
+  {
+    "id": "francis",
+    "name": "弗朗索瓦一世",
+    "nameEn": "Francis I",
+    "title": "法兰西国王",
+    "points": 3,
+    "art": "francis",
+    "cost": {
+      "w": 3,
+      "b": 0,
+      "g": 0,
+      "r": 3,
+      "k": 3
+    }
+  },
+  {
+    "id": "charles",
+    "name": "查理五世",
+    "nameEn": "Charles V",
+    "title": "神圣罗马帝国皇帝",
+    "points": 3,
+    "art": "charles",
+    "cost": {
+      "w": 0,
+      "b": 0,
+      "g": 3,
+      "r": 3,
+      "k": 3
+    }
+  }
+]

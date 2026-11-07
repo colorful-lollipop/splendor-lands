@@ -1,0 +1,28 @@
+﻿import { chromium } from 'playwright-core';
+const CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const browser = await chromium.launch({ executablePath: CHROME, headless: true });
+const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
+const errs = [];
+page.on('pageerror', (e) => errs.push(e.message));
+await page.goto('http://localhost:3001', { waitUntil: 'networkidle' });
+await page.waitForTimeout(500);
+await page.fill('#player-name', '布局测试');
+await page.click('button:has-text("创建房间")');
+await page.waitForSelector('.room-screen');
+await page.click('.bot-add-group .btn');
+await page.waitForTimeout(200);
+await page.click('.bot-add-group .btn');
+await page.waitForTimeout(200);
+await page.click('button:has-text("开始游戏")');
+await page.waitForSelector('.game-shell', { timeout: 15000 });
+await page.waitForTimeout(2000);
+await page.screenshot({ path: 'shots/board-single.png' });
+const box = await page.locator('.tier-single .card').first().boundingBox();
+const tabs = await page.locator('.tier-tabs').boundingBox();
+console.log('card', box, 'tabs', tabs);
+// 切到三级
+await page.click('.tier-tab:has-text("三级")');
+await page.waitForTimeout(600);
+await page.screenshot({ path: 'shots/board-single-3.png' });
+console.log('errors', errs.slice(0, 3));
+await browser.close();

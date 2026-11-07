@@ -1,0 +1,48 @@
+{
+  "name": "splendor-lands",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "璀璨宝石 · 炉石风格多人在线桌游",
+  "scripts": {
+    "dev": "concurrently -k -n server,client -c yellow,cyan \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "node --watch server/index.mjs",
+    "dev:client": "vite",
+    "play": "npm run build && node server/index.mjs",
+    "build": "tsc --noEmit && vite build",
+    "start": "node server/index.mjs",
+    "serve": "npm run build && npm start",
+    "test": "vitest run",
+    "sim": "node scripts/simulate.mjs",
+    "assets": "node scripts/optimize-assets.mjs",
+    "gems": "node scripts/gem-assets.mjs",
+    "ai:data": "node scripts/gen-imitation.mjs 300",
+    "ai:bc": "python train/bc.py --epochs 12",
+    "ai:train": "python train/train.py --iters 120 --games 16 --epochs 3",
+    "ai:export": "python train/export_weights.py",
+    "ai:duel": "node scripts/nn-duel.mjs 20 normal",
+    "duel": "node scripts/duel.mjs 60 normal"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@types/ws": "^8.5.13",
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "playwright-core": "^1.64.1",
+    "sharp": "^0.33.5",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vitest": "^5.0.5"
+  }
+}

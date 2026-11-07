@@ -1,0 +1,13 @@
+﻿import { chromium } from 'playwright-core';
+const CHROME = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
+const browser = await chromium.launch({ executablePath: CHROME, headless: true });
+const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
+const errs = [];
+page.on('pageerror', (e) => errs.push(e.message));
+page.on('console', (m) => { if (m.type() === 'error') errs.push(m.text()); });
+await page.goto('http://localhost:3001', { waitUntil: 'networkidle' });
+await page.waitForTimeout(1200);
+console.log('status text:', await page.locator('.status-pill, .landing-nav').first().innerText().catch(()=>'n/a'));
+console.log('errors', errs.slice(0,3));
+await page.screenshot({ path: 'shots/prod-final.png' });
+await browser.close();
