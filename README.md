@@ -4,6 +4,14 @@
 
 > 非官方粉丝作品。卡面与贵族肖像由 AI 绘制，规则遵循 Marc André 的 Splendor。
 
+![首页](docs/screenshots/landing.jpg)
+
+| 牌桌 | 皮肤工坊 |
+| --- | --- |
+| ![牌桌](docs/screenshots/game.jpg) | ![皮肤](docs/screenshots/skins.jpg) |
+
+![图鉴](docs/screenshots/collection.jpg)
+
 ## 功能
 
 - **多人联机**：创建 / 加入房间，房间固定 4 个席位、**2 人即可开局**，无需在创建时决定人数；房间默认**私密**（只有拿到房间号或邀请链接的人能加入），房主可在房间内一键切换为公开、显示在大厅房间列表；房主可添加电脑玩家，分享房间号或邀请链接即可入席。
