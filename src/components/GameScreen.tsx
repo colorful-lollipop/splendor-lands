@@ -28,6 +28,7 @@ import { sfx } from '../lib/sfx';
 import { flashAt, flyGems } from '../lib/fx';
 import { speak } from '../lib/voice';
 import { copyText } from '../lib/clipboard';
+import { TurnTimer } from './TurnTimer';
 
 const DESIGN_W = 1520;
 const DESIGN_H = 960;
@@ -322,6 +323,11 @@ export function GameScreen() {
                         : '结算中'}
                 </span>
               </span>
+              <TurnTimer
+                deadline={game.turnDeadline}
+                seconds={game.turnSeconds}
+                active={!game.finished && (game.turn === myId || game.pending?.playerId === myId)}
+              />
               {game.endTriggered && !game.finished && (
                 <span className="round-pill" style={{ color: '#ffcc8a' }}>
                   <Icon name="crown" size={13} /> 最后一轮

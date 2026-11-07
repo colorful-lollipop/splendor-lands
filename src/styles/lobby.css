@@ -506,6 +506,74 @@
   color: rgba(150, 130, 100, 0.5);
 }
 
+/* ---------- 回合倒计时 ---------- */
+.turn-timer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--gold-1);
+  background: rgba(0, 0, 0, 0.32);
+  box-shadow: 0 0 0 1px rgba(220, 180, 99, 0.32) inset;
+  transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+}
+.turn-timer b {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.turn-timer .tt-label {
+  font-size: 9px;
+  font-style: normal;
+  opacity: 0.7;
+}
+.turn-timer .tt-bar {
+  display: block;
+  width: 46px;
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+}
+.turn-timer .tt-bar > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--gold-3), var(--gold-1));
+  transition: width 0.3s linear;
+}
+.turn-timer.is-danger {
+  color: #fff1ee;
+  background: linear-gradient(180deg, #8e1f1f, #5c1010);
+  box-shadow:
+    0 0 0 1px rgba(255, 150, 140, 0.75) inset,
+    0 0 18px rgba(220, 60, 50, 0.55);
+  animation: timer-alarm 0.9s ease-in-out infinite;
+}
+.turn-timer.is-danger b {
+  color: #fff;
+}
+.turn-timer.is-danger .tt-bar > span {
+  background: linear-gradient(90deg, #ffb3a6, #ff5a4a);
+}
+.turn-timer.is-compact {
+  height: 22px;
+  padding: 0 7px;
+  font-size: 11px;
+  gap: 3px;
+}
+.turn-timer.is-compact b {
+  font-size: 12px;
+}
+@keyframes timer-alarm {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.06); filter: brightness(1.28); }
+}
+
 /* ============================================================
    房间等待页
    ============================================================ */
@@ -554,6 +622,78 @@
   margin-left: auto;
   display: flex;
   gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.visibility-btn {
+  gap: 6px;
+}
+.visibility-btn.is-public {
+  color: #2a1a06;
+  background: linear-gradient(180deg, var(--gold-1), var(--gold-2) 60%, var(--gold-3));
+  box-shadow: 0 0 14px rgba(220, 180, 99, 0.25);
+}
+.room-visibility {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 11px;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  color: var(--dim);
+  background: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 0 1px rgba(196, 152, 78, 0.18) inset;
+}
+.room-visibility.is-public {
+  color: var(--gold-2);
+  box-shadow: 0 0 0 1px rgba(220, 180, 99, 0.4) inset;
+}
+
+.turn-setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 7px 10px;
+  border-radius: 9px;
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: 0 0 0 1px rgba(196, 152, 78, 0.16) inset;
+}
+.turn-setting-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.turn-setting-options {
+  display: flex;
+  gap: 4px;
+}
+.turn-setting-options button {
+  min-width: 44px;
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 6px;
+  font-size: 10.5px;
+  color: var(--dim);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 1px rgba(196, 152, 78, 0.18) inset;
+  transition: color 0.16s, background 0.16s;
+}
+.turn-setting-options button:hover {
+  color: var(--gold-1);
+}
+.turn-setting-options button.is-active {
+  color: #2a1a06;
+  background: linear-gradient(180deg, var(--gold-1), var(--gold-2) 60%, var(--gold-3));
+  box-shadow: 0 0 12px rgba(220, 180, 99, 0.22);
 }
 
 .room-code-block {

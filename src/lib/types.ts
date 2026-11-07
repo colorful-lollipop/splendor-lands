@@ -64,7 +64,8 @@ export type GameAction =
   | { type: 'reserve'; source: { kind: 'board'; tier: number; index: number } | { kind: 'deck'; tier: number } }
   | { type: 'buy'; source: { kind: 'board'; tier: number; index: number } | { kind: 'reserved'; cardId: string } }
   | { type: 'chooseNoble'; nobleId: string }
-  | { type: 'returnTokens'; tokens: Partial<Tokens> };
+  | { type: 'returnTokens'; tokens: Partial<Tokens> }
+  | { type: 'pass' };
 
 export interface PendingState {
   type: 'noble' | 'discard';
@@ -96,6 +97,8 @@ export interface GameView {
   you: { id: string; seat: number } | null;
   canAct: boolean;
   roomCode: string;
+  turnSeconds: number;
+  turnDeadline: number | null;
   me: { id: string; name: string; isBot: boolean; seat: number; isHost: boolean; avatar?: string } | null;
   hostId: string;
 }
@@ -126,6 +129,7 @@ export interface RoomState {
   maxPlayers: number;
   status: 'lobby' | 'playing' | 'finished';
   isPublic: boolean;
+  turnSeconds: number;
   players: RoomPlayer[];
   chat: ChatEntry[];
   isFull: boolean;

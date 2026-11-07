@@ -89,6 +89,12 @@ const paths: Record<string, JSX.Element> = {
       <path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3" />
     </>
   ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </>
+  ),
   gem: (
     <>
       <path d="M7 3h10l4 6-9 12L3 9z" />

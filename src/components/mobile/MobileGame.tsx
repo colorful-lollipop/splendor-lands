@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { CardData, Color, GameView, PlayerView } from '../../lib/types';
 import { CARD_MAP, COLORS, GEM, NOBLE_MAP, TIER_INFO, cardName, computePayment, tierRoman } from '../../lib/meta';
 import { localizeCardText } from '../../lib/cardNames';
+import { TurnTimer } from '../TurnTimer';
 import { CardView, NobleTile } from '../CardView';
 import { Avatar } from '../Avatar';
 import { Gem } from '../Gem';
@@ -95,6 +96,12 @@ export function MobileGame({
             {game.roomCode}
           </button>
           <span className="m-round">第 {game.round} 轮</span>
+          <TurnTimer
+            deadline={game.turnDeadline}
+            seconds={game.turnSeconds}
+            active={!game.finished && (game.turn === myId || game.pending?.playerId === myId)}
+            compact
+          />
           <span className={`m-turn ${myTurn ? 'is-you' : ''}`}>{turnText}</span>
 
           <div className="m-scores">

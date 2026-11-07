@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { addBot, leaveRoom, notify, removeBot, rematch, sendChat, setRoomPublic, startGame, useStore, openRules, openSkins } from '../store';
+import { addBot, leaveRoom, notify, removeBot, rematch, sendChat, setRoomPublic, setTurnSeconds, startGame, useStore, openRules, openSkins } from '../store';
 import { Avatar } from './Avatar';
 import { Icon, PatternDivider } from './Ornaments';
 import { Gem } from './Gem';
@@ -56,6 +56,24 @@ export function RoomScreen() {
           </div>
 
           <div className="rh-actions">
+            {isHost && room.status === 'lobby' ? (
+              <button
+                className={`btn btn-ghost btn-sm visibility-btn ${room.isPublic ? 'is-public' : ''}`}
+                onClick={() => {
+                  sfx('click');
+                  setRoomPublic(!room.isPublic);
+                }}
+                title={room.isPublic ? '当前会出现在大厅公开房间列表，点击转为私密' : '默认私密，只有拿到房间号或邀请链接的人才能加入，点击公开'}
+              >
+                <Icon name={room.isPublic ? 'users' : 'lock'} size={14} />
+                {room.isPublic ? '公开房间' : '私密房间'}
+              </button>
+            ) : (
+              <span className={`room-visibility ${room.isPublic ? 'is-public' : ''}`}>
+                <Icon name={room.isPublic ? 'users' : 'lock'} size={13} />
+                {room.isPublic ? '公开房间' : '私密房间'}
+              </span>
+            )}
             <button className="btn btn-ghost btn-sm" onClick={() => copy(shareLink, '邀请链接已复制')}>
               <Icon name="copy" size={14} /> 复制邀请链接
             </button>
@@ -115,6 +133,27 @@ export function RoomScreen() {
 
             {isHost && (
               <div className="host-actions" style={{ marginTop: 18 }}>
+                {room.status === 'lobby' && (
+                  <div className="turn-setting">
+                    <span className="turn-setting-label">
+                      <Icon name="clock" size={12} /> 每回合限时
+                    </span>
+                    <div className="turn-setting-options">
+                      {[30, 60, 90, 0].map((seconds) => (
+                        <button
+                          key={seconds}
+                          className={room.turnSeconds === seconds ? 'is-active' : ''}
+                          onClick={() => {
+                            sfx('click');
+                            setTurnSeconds(seconds);
+                          }}
+                        >
+                          {seconds ? `${seconds}s` : '不限'}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <div style={{ display: 'flex', gap: 8 }}>
                   <button
                     className="btn"
@@ -165,24 +204,14 @@ export function RoomScreen() {
               <span className="tip-chip">自动补牌</span>
               <span className="tip-chip">支持断线重连</span>
               <span className="tip-chip">最多 4 人</span>
-              {isHost && room.status === 'lobby' ? (
-                <button
-                  className={`tip-chip tip-chip-toggle ${room.isPublic ? 'is-on' : ''}`}
-                  onClick={() => {
-                    sfx('click');
-                    setRoomPublic(!room.isPublic);
-                  }}
-                  title={room.isPublic ? '当前会出现在大厅公开房间列表' : '默认私密，只有拿到房间号或邀请链接的人才能加入'}
-                >
-                  <Icon name={room.isPublic ? 'users' : 'lock'} size={11} />
-                  {room.isPublic ? '公开房间 · 点击转私密' : '私密房间 · 点击公开'}
-                </button>
-              ) : (
-                <span className="tip-chip">
-                  <Icon name={room.isPublic ? 'users' : 'lock'} size={11} />
-                  {room.isPublic ? '公开房间' : '私密房间'}
-                </span>
-              )}
+              <span className="tip-chip">
+                <Icon name="clock" size={11} />
+                {room.turnSeconds ? `每回合 ${room.turnSeconds} 秒` : '不限时'}
+              </span>
+              <span className="tip-chip">
+                <Icon name={room.isPublic ? 'users' : 'lock'} size={11} />
+                {room.isPublic ? '公开房间' : '私密房间'}
+              </span>
             </div>
           </section>
 

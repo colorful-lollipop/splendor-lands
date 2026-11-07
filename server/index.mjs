@@ -128,7 +128,7 @@ wss.on('connection', (ws) => {
           return;
         case 'create': {
           if (ws.roomCode) throw new Error('你已经在房间中');
-          const { room, player } = createRoom({ maxPlayers: msg.maxPlayers, name: msg.name, socket: ws, avatar: msg.avatar });
+          const { room, player } = createRoom({ maxPlayers: msg.maxPlayers, name: msg.name, socket: ws, avatar: msg.avatar, turnSeconds: msg.turnSeconds });
           attach(ws, room, player);
           room.broadcastRoom();
           return;
@@ -170,6 +170,7 @@ wss.on('connection', (ws) => {
           });
           attach(ws, room, player);
           if (reconnected) toast(ws, '已重新连接', 'info');
+          if (room.status === 'playing') room.scheduleTurnTimer();
           return;
         }
         case 'leave': {
@@ -192,6 +193,12 @@ wss.on('connection', (ws) => {
             if (client.roomCode) continue;
             safeSend(client, { type: 'rooms', rooms: roomList(), stats: onlineStats() });
           }
+          return;
+        }
+        case 'turnSeconds': {
+          const room = findRoom(ws.roomCode);
+          if (!room) throw new Error('你不在房间中');
+          room.setTurnSeconds(ws.playerId, msg.seconds);
           return;
         }
         case 'start': {

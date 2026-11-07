@@ -431,6 +431,9 @@ export function applyAction(prev, playerId, action) {
     case 'buy':
       buyCard(state, player, action.source || {});
       break;
+    case 'pass':
+      pushLog(state, player.id, `${player.name} 行动超时，跳过本回合`, 'info');
+      break;
     default:
       throw new RuleError('未知动作');
   }

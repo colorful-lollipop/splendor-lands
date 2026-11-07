@@ -98,7 +98,7 @@ export const ART_PRESETS: Record<ArtSkin, Omit<SkinSettings, 'art' | 'avatar'>> 
 
 export const SKIN_OPTIONS = {
   frame: [
-    { id: 'gilded', name: '黄金时代', desc: '暖金雕花与胡桃木，炉石酒馆的经典质感。', swatch: ['#f6df9d', '#c9963f', '#3a2410'] },
+    { id: 'gilded', name: '黄金时代', desc: '暖金雕花与胡桃木，古典酒馆的经典质感。', swatch: ['#f6df9d', '#c9963f', '#3a2410'] },
     { id: 'jade', name: '翡翠梦境', desc: '青玉与银叶，幽静而华贵。', swatch: ['#d7f2d9', '#59a87c', '#11291f'] },
     { id: 'frost', name: '霜银王座', desc: '寒银与冰蓝，如北境宫廷。', swatch: ['#eaf5ff', '#8fb4d9', '#152030'] },
     { id: 'abyss', name: '深渊余烬', desc: '黑铁与余火，暗影中的低语。', swatch: ['#f3b47a', '#a3562c', '#211318'] },

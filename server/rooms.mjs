@@ -1,4 +1,4 @@
-import { createGame, applyAction, sanitizeState, RuleError } from '../shared/rules.mjs';
+import { createGame, applyAction, sanitizeState, RuleError, COLORS } from '../shared/rules.mjs';
 import { chooseBotAction } from '../shared/bot.mjs';
 import { chooseNnAction, nnAvailable, nnThought } from '../shared/nn-bot.mjs';
 import { pushLog } from '../shared/rules.mjs';
@@ -32,9 +32,12 @@ function sanitizeChat(text) {
 }
 
 export class Room {
-  constructor({ maxPlayers = 4 } = {}) {
+  constructor({ maxPlayers = 4, turnSeconds = 60 } = {}) {
     this.code = makeCode();
     this.maxPlayers = Math.max(2, Math.min(4, Number(maxPlayers) || 4));
+    this.turnSeconds = [0, 30, 60, 90].includes(Number(turnSeconds)) ? Number(turnSeconds) : 60;
+    this.turnDeadline = null;
+    this.turnTimer = null;
     this.createdAt = Date.now();
     this.status = 'lobby';
     this.isPublic = false;
@@ -99,6 +102,7 @@ export class Room {
         gp.isBot = true;
         gp.connected = false;
       }
+      this.scheduleTurnTimer();
       this.broadcastGame();
       this.maybeRunBot();
     }
@@ -129,6 +133,7 @@ export class Room {
       maxPlayers: this.maxPlayers,
       status: this.status,
       isPublic: this.isPublic,
+      turnSeconds: this.turnSeconds,
       players,
       chat: this.chat.slice(-40),
       isFull: this.isFull,
@@ -168,6 +173,8 @@ export class Room {
           }
         : null,
       hostId: this.hostId,
+      turnSeconds: this.turnSeconds,
+      turnDeadline: this.turnDeadline,
       players: view.players.map((p) => {
         const rp = this.players.get(p.id);
         return {
@@ -195,6 +202,80 @@ export class Room {
     return this.isPublic;
   }
 
+  setTurnSeconds(hostId, seconds) {
+    if (this.hostId !== hostId) throw new Error('只有房主可以修改回合时限');
+    if (this.status !== 'lobby') throw new Error('游戏开始后不能修改回合时限');
+    const value = Number(seconds);
+    if (![0, 30, 60, 90].includes(value)) throw new Error('回合时限只能是 30 / 60 / 90 秒或不限时');
+    this.turnSeconds = value;
+    this.broadcastRoom();
+    return this.turnSeconds;
+  }
+
+  clearTurnTimer() {
+    clearTimeout(this.turnTimer);
+    this.turnTimer = null;
+    this.turnDeadline = null;
+  }
+
+  /** 为当前行动者安排超时自动跳过。0 表示不限时。 */
+  scheduleTurnTimer() {
+    this.clearTurnTimer();
+    if (this.status !== 'playing' || !this.game || this.game.finished) return;
+    if (!this.turnSeconds) return;
+
+    const actorId = this.game.phase === 'action' ? this.game.players[this.game.turn]?.id : this.game.pending?.playerId;
+    if (!actorId) return;
+    const roomPlayer = this.players.get(actorId);
+    const gamePlayer = this.game.players.find((p) => p.id === actorId);
+    // 电脑 / 掉线玩家由 bot 逻辑处理，不占用倒计时
+    if (!roomPlayer || roomPlayer.isBot || !roomPlayer.connected || gamePlayer?.isBot) return;
+
+    this.turnDeadline = Date.now() + this.turnSeconds * 1000;
+    this.turnTimer = setTimeout(() => this.handleTimeout(actorId), this.turnSeconds * 1000 + 60);
+  }
+
+  handleTimeout(actorId) {
+    this.turnTimer = null;
+    this.turnDeadline = null;
+    if (this.status !== 'playing' || !this.game || this.game.finished) return;
+    const currentId = this.game.phase === 'action' ? this.game.players[this.game.turn]?.id : this.game.pending?.playerId;
+    if (currentId !== actorId) return;
+
+    try {
+      if (this.game.phase === 'noble') {
+        const nobleId = this.game.pending?.options?.[0];
+        if (nobleId) this.game = applyAction(this.game, actorId, { type: 'chooseNoble', nobleId });
+      } else if (this.game.phase === 'discard') {
+        // 按颜色顺序归还到刚好 10 枚
+        const player = this.game.players.find((p) => p.id === actorId);
+        const need = this.game.pending?.mustReturn || 0;
+        const tokens = {};
+        let left = need;
+        for (const color of [...COLORS, 'gold']) {
+          if (left <= 0) break;
+          const take = Math.min(left, player.tokens[color] || 0);
+          if (take > 0) {
+            tokens[color] = take;
+            left -= take;
+          }
+        }
+        this.game = applyAction(this.game, actorId, { type: 'returnTokens', tokens });
+      } else {
+        this.game = applyAction(this.game, actorId, { type: 'pass' });
+      }
+    } catch (err) {
+      console.warn('[timeout] auto pass failed:', err.message);
+      return;
+    }
+
+    if (this.game.finished) this.status = 'finished';
+    this.scheduleTurnTimer();
+    this.broadcastGame();
+    if (this.status === 'finished') this.broadcastRoom();
+    this.maybeRunBot();
+  }
+
   start(hostId) {
     if (this.status !== 'lobby') throw new Error('游戏已经开始了');
     if (this.hostId !== hostId) throw new Error('只有房主可以开始游戏');
@@ -209,12 +290,14 @@ export class Room {
     this.status = 'playing';
     this.chat = [];
     this.broadcastRoom();
+    this.scheduleTurnTimer();
     this.broadcastGame();
     this.maybeRunBot();
   }
 
   rematch(hostId) {
     if (this.hostId !== hostId) throw new Error('只有房主可以开始新一局');
+    this.clearTurnTimer();
     this.game = null;
     this.status = 'lobby';
     this.chat = [];
@@ -239,6 +322,7 @@ export class Room {
     }
     this.lastActivity = Date.now();
     if (this.game.finished) this.status = 'finished';
+    this.scheduleTurnTimer();
     this.broadcastGame();
     if (this.status === 'finished') this.broadcastRoom();
     this.maybeRunBot();
@@ -303,6 +387,7 @@ export class Room {
       }
     }
     if (this.game.finished) this.status = 'finished';
+    this.scheduleTurnTimer();
     this.broadcastGame();
     this.maybeRunBot();
   }
@@ -320,6 +405,7 @@ export class Room {
 
   destroy() {
     clearTimeout(this.botTimer);
+    this.clearTurnTimer();
     rooms.delete(this.code);
   }
 }
@@ -328,8 +414,8 @@ export function findRoom(code) {
   return rooms.get(String(code || '').toUpperCase().trim());
 }
 
-export function createRoom({ maxPlayers, name, socket, avatar }) {
-  const room = new Room({ maxPlayers });
+export function createRoom({ maxPlayers, name, socket, avatar, turnSeconds }) {
+  const room = new Room({ maxPlayers, turnSeconds });
   const player = room.addPlayer({ name, socket, avatar });
   room.broadcastRoom();
   return { room, player };

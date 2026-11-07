@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "璀璨宝石 · 炉石风格多人在线桌游",
+  "description": "璀璨宝石 · 多风格、重收藏的多人在线桌游",
   "scripts": {
     "dev": "concurrently -k -n server,client -c yellow,cyan \"npm:dev:server\" \"npm:dev:client\"",
     "dev:server": "node --watch server/index.mjs",

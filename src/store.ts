@@ -435,6 +435,11 @@ export function setRoomPublic(isPublic: boolean) {
   net.send({ type: 'roomPublic', isPublic });
 }
 
+/** 房主设置每回合限时（秒），0 为不限。 */
+export function setTurnSeconds(seconds: number) {
+  net.send({ type: 'turnSeconds', seconds });
+}
+
 export function updateAvatar(avatar: string) {
   updateSkins({ ...state.skins, avatar });
   if (state.room || state.game) net.send({ type: 'avatar', avatar });

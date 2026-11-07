@@ -64,3 +64,23 @@ describe('保留卡购买', () => {
   });
 });
 
+describe('回合超时跳过', () => {
+  it('pass 不改变宝石与卡牌，只把行动权交给下一位', () => {
+    const before = createGame({ players: players(2), seed: 'timeout-pass', startPlayer: 0 });
+    const bank = { ...before.tokens };
+    const hand = { ...before.players[0].tokens };
+    const state = applyAction(before, 'p0', { type: 'pass' });
+
+    expect(state.turn).toBe(1);
+    expect(state.tokens).toEqual(bank);
+    expect(state.players[0].tokens).toEqual(hand);
+    expect(state.players[0].cards).toEqual([]);
+    expect(state.log.some((entry) => entry.text.includes('行动超时'))).toBe(true);
+  });
+
+  it('不是自己的回合不能跳过', () => {
+    const state = createGame({ players: players(2), seed: 'timeout-wrong-turn', startPlayer: 0 });
+    expect(() => applyAction(state, 'p1', { type: 'pass' })).toThrow(RuleError);
+  });
+});
+

@@ -23,13 +23,13 @@ await pageB.waitForTimeout(800);
 const beforePublic = await pageB.locator('.room-row').allTextContents();
 console.log('lobby before public:', beforePublic.length, beforePublic.some((t) => t.includes(code)));
 
-await pageA.click('.tip-chip-toggle');
+await pageA.click('.visibility-btn');
 await pageA.waitForTimeout(700);
 const afterPublic = await pageB.locator('.room-row').allTextContents();
 console.log('lobby after public:', afterPublic.length, afterPublic.some((t) => t.includes(code)));
 await pageB.screenshot({ path: 'shots/lobby-public-room.png' });
 
-await pageA.click('.tip-chip-toggle');
+await pageA.click('.visibility-btn');
 await pageA.waitForTimeout(700);
 const afterPrivate = await pageB.locator('.room-row').allTextContents();
 console.log('lobby after private:', afterPrivate.length, afterPrivate.some((t) => t.includes(code)));
