@@ -57,6 +57,10 @@ npm start
 
 构建产物输出到 `dist/`，由 Express 在 3001 端口同时托管静态资源与 WebSocket。浏览器访问 <http://localhost:3001>。
 
+**在线游玩**：<https://splendor.zulogic.cn>
+
+线上版本运行在 Ubuntu + systemd 上，由 1Panel OpenResty（Nginx）反向代理到仅监听 `127.0.0.1:3101` 的 Node 服务；HTTPS 使用 `*.zulogic.cn` 通配符证书，`/ws` 已配置 WebSocket 升级与长连接超时。房间状态保存在内存中，服务重启会清空房间。
+
 修改端口：
 
 ```bash

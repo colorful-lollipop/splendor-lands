@@ -1,0 +1,17 @@
+[Unit]
+Description=Splendor Lands web game
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/splendor
+Environment=NODE_ENV=production
+Environment=PORT=3101
+Environment=HOST=127.0.0.1
+ExecStart=/root/.nvm/versions/node/v24.12.0/bin/node server/index.mjs
+Restart=always
+RestartSec=3
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
