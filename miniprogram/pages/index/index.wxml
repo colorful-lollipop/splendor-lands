@@ -1,0 +1,34 @@
+<view class="stage">
+  <image class="backdrop" src="/assets/cover.jpg" mode="aspectFill" />
+  <view class="veil"></view>
+  <view class="glow"></view>
+
+  <view class="topbar">
+    <view class="brand">
+      <text class="gem">◆</text>
+      <text class="brand-name">SPLENDOR</text>
+    </view>
+    <text class="edition">线上桌游</text>
+  </view>
+
+  <view class="content">
+    <text class="kicker">宝石商人的文艺复兴</text>
+    <text class="title">璀璨宝石</text>
+    <text class="subtitle">收集宝石，购入发展卡，赢取贵族的青睐。</text>
+
+    <view class="chips">
+      <text class="chip">2–4 人在线</text>
+      <text class="chip">横屏游玩</text>
+      <text class="chip">无需下载</text>
+    </view>
+
+    <button class="enter" hover-class="enter-hover" bindtap="enterGame">
+      <text class="enter-main">进入牌桌</text>
+      <text class="enter-sub">ENTER THE TABLE</text>
+    </button>
+
+    <text class="hint">首次进入会加载卡面素材，请稍候片刻</text>
+  </view>
+
+  <text class="foot">非官方粉丝作品 · 规则遵循 Marc André 的 Splendor</text>
+</view>

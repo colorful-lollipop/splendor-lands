@@ -17,6 +17,11 @@ server.log
 
 # deployment bundles
 deploy/*.tar.gz
+deploy/*.zip
+
+# WeChat DevTools local settings
+miniprogram/project.private.config.json
+miniprogram/.idea/
 
 # python training artefacts
 train/checkpoints/

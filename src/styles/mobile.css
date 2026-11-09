@@ -119,7 +119,8 @@
     inset: 0;
     display: flex;
     flex-direction: column;
-    padding: 0;
+    /* 刘海屏横屏时避开左右安全区，微信小程序 web-view 内同样生效。 */
+    padding: 0 env(safe-area-inset-right) 0 env(safe-area-inset-left);
     background:
       radial-gradient(90% 70% at 50% 40%, rgba(90, 60, 24, 0.18), transparent 70%),
       linear-gradient(180deg, #120c07, #080503 70%);

@@ -22,6 +22,7 @@
 - **皮肤工坊**：卡框主题、卡面画风、宝石样式、卡背、桌面、贵族、头像共 7 类外观，实时预览并保存在本机。卡面包含 90 张传奇油画、90 张彩窗圣殿，以及「星轨绘旅」动漫主题（90 张逐卡独立的动漫幻想原画），整张替换而非滤镜。三套画风各有独立的卡框、材质与 **90 个专属卡名**（例：同一张三级红卡 = 浴火凤凰 / 红莲圣女 / 焰羽·誓约者），换肤即换名，战报与详情同步切换。
 - **永久宝石图鉴**：自己实际购入的发展卡会自动点亮图鉴，保留未购买的卡不计入；支持等级、颜色与已收录筛选、大图预览和收集进度，收藏保存在本机并在刷新后保留。
 - **手机横屏**：≤920px 或 ≤560px 高时自动切换为紧凑牌桌，宝石银行、卡牌分页、玩家与聊天改为底部抽屉。
+- **微信小程序**：内置 `miniprogram/` 原生外壳，通过 `web-view` 承载线上牌桌，带封面页、横屏锁定、分享卡片、失败重试与带房间号的分享路径；普通小程序（非小游戏）路线，详见 [`miniprogram/README.md`](miniprogram/README.md)。
 - **回合限时**：房主可在房间内选择每回合 30 / 60 / 90 秒或不限时；桌面与手机都会显示倒计时，最后 5 秒转为醒目的红色脉冲，超时自动跳过该回合（贵族选择与超载归还也会自动处理）。
 - **氛围细节**：程序化合成音效与酒馆背景音乐、战报与聊天、卡牌详情、贵族肖像、回合提示、响应式缩放。
 
@@ -60,6 +61,20 @@ npm start
 **在线游玩**：<https://splendor.zulogic.cn>
 
 线上版本运行在 Ubuntu + systemd 上，由 1Panel OpenResty（Nginx）反向代理到仅监听 `127.0.0.1:3101` 的 Node 服务；HTTPS 使用 `*.zulogic.cn` 通配符证书，`/ws` 已配置 WebSocket 升级与长连接超时。房间状态保存在内存中，服务重启会清空房间。
+
+### 微信小程序
+
+仓库内的 [`miniprogram/`](miniprogram/README.md) 是可直接导入微信开发者工具的原生外壳：
+
+- 原生封面页 → `web-view` 牌桌，牌桌页强制横屏。
+- 与浏览器玩家互通，联机、重连、皮肤、图鉴全部沿用线上 H5。
+- 分享卡片、带房间号的分享路径、加载与错误重试、版本更新提示。
+- 走**普通小程序**（非小游戏）类目，不涉及小游戏版号；需要非个人主体小程序，并配置 HTTPS 业务域名。审核是否认定为游戏内容由微信判定。
+
+```bash
+# 生成小程序封面、分享图与后台头像
+node scripts/miniprogram-assets.mjs
+```
 
 修改端口：
 
@@ -117,6 +132,7 @@ Splendor/
 ├─ data/              原始 CSV（卡牌、贵族）
 ├─ public/assets/art/ 已优化的 WebP 美术资源
 ├─ art-src/           原始 PNG（归档）
+├─ miniprogram/       微信小程序外壳（封面页 + web-view 牌桌）
 ├─ scripts/           数据构建、资源优化、模拟与 Playwright 截图脚本
 └─ dist/              生产构建输出
 ```
@@ -141,6 +157,8 @@ npm run sim            # 规则模拟
 npm run assets         # 重新压缩 art-src 中的原图
 npm run gems           # 重新抠图并生成宝石素材
 node scripts/anime-assets.mjs # 压缩动漫原图并生成预览 contact sheet
+node scripts/miniprogram-assets.mjs # 生成小程序封面、分享图与头像
+node scripts/miniprogram-check.mjs  # 校验小程序结构、包体与线上地址
 node scripts/shot.mjs http://localhost:5173 lobby 1600 1000
 node scripts/flow.mjs  # 创建房间 → 加电脑 → 开局 → 截图
 node scripts/playtoend.mjs  # 自动打完整局
